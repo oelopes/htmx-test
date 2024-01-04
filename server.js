@@ -7,14 +7,11 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.get('/users', async (req, res) => {
-  // const users = [
-  //   { id: 1, name: 'Leo'},
-  //   { id: 2, name: 'Lao'},
-  //   { id: 3, name: 'Lio'}
-  // ]
-
+  
   setTimeout(async() => {
-    const users = await fetch('https://jsonplaceholder.typicode.com/users').then(response => response.json())
+    const limit = req.query.limit 
+
+    const users = await fetch(`https://jsonplaceholder.typicode.com/users?_limit=${limit}`).then(response => response.json())
 
     res.send(`
     <h1 class="text-2xl font-bold my-4">Users</h1>
