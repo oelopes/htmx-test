@@ -2,7 +2,9 @@ import express from 'express';
 
 const app = express();
 
-app.use(express.static('public'));
+app.use('/', express.static('public'));
+app.use('/form', express.static('public2'));
+
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
@@ -21,6 +23,15 @@ app.get('/users', async (req, res) => {
   `);
   }, 2000)
 });
+
+app.post('/convert', (req, res) => {
+  const fahrenheit = parseFloat(req.body.fahrenheit)
+  const celsius = (fahrenheit - 32) * (5 / 9)
+
+  res.send(`
+    <p>Celsius: ${celsius.toFixed()}</p>
+  `)
+})
 
 app.listen(3000, () => {
   console.log("Server running on 3000")
