@@ -1,6 +1,6 @@
 # HTMX
 
-Two simple pages for testing some of the capabilities of HTMX with NodeJS
+Two simple pages for testing some of the capabilities of HTMX with NodeJS and Tailwind
 
 ## Installation
 
