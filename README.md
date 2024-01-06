@@ -14,6 +14,10 @@ npm install
 npm run dev
 ```
 
+## Deployed on Render.com
+
+https://htmx-test.onrender.com/
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
