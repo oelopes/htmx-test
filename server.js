@@ -8,20 +8,42 @@ app.use('/form', express.static('public2'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-app.get('/users', async (req, res) => {
-  
-  setTimeout(async() => {
-    const limit = req.query.limit 
+app.post('/search', async(req, res) => {
+  const searchTerm = req.body.search?.toLowerCase()
 
-    const users = await fetch(`https://jsonplaceholder.typicode.com/users?_limit=${limit}`).then(response => response.json())
+  const response = await fetch(`https://jsonplaceholder.typicode.com/users`).then(response => response.json())
 
-    res.send(`
-    <h1 class="text-2xl font-bold my-4">Users</h1>
-    <ul>
-      ${users.map(user => `<li>${user.name}</li>`).join('')}
-    </ul>
-  `);
-  }, 2000)
+  const usersHtml = response.map(user => `
+  <tr>
+    <td><div class="my-4 p-2">${user.name}</div></td>
+    <td><div class="my-4 p-2">${user.email}</div></td>
+  </tr>
+`).join('')
+
+  if(!searchTerm) {
+    return res.send(usersHtml)
+  }
+
+  const searchResults = response.filter((contact) => contact.name.toLowerCase().includes(searchTerm))
+
+  if(!searchResults.length) {
+    return res.send(`
+    <tr>
+      <td><div class="my-4 p-2">Your search for "${searchTerm}" didn't return any results</div><td>
+    </tr>
+    `)
+  }
+
+  const searchResultHtml = searchResults.map(user => `
+    <tr>
+      <td><div class="my-4 p-2">${user.name}</div></td>
+      <td><div class="my-4 p-2">${user.email}</div></td>
+    </tr>
+  `).join('')
+
+
+
+  return res.send(searchResultHtml)
 });
 
 app.post('/convert', (req, res) => {
